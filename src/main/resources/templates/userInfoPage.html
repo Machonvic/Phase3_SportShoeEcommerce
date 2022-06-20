@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+   <head>
+      <title>User Info</title>
+   </head>
+   <body>
+      <!-- Include _menu.html -->
+      <th:block th:include="/_menu"></th:block>
+      
+      
+      <h2>User Info Page</h2>
+      <h3>Welcome : <span th:utext="${#request.userPrincipal.name}"></span></h3>
+      	
+      	<!--<table border="1" cellpadding="10">
+		<thead>
+			<tr>
+				<th>Username</th>
+				<th>Email Address</th>
+				<th>First name</th>
+				<th>Last Name</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:object=${listAdmin}>
+				<td th:text="${listAdmin.userName}">Username</td>
+				<td th:text="${listAdmin.userEmail}">Email Address</td>
+				<td th:text="${listAdmin.userFirstname}">First Name</td>
+				<td th:text="${user.userLastname}">Last Name</td>
+			</tr>
+		</tbody>
+	</table>-->
+      
+      <div sec:authorize="hasRole('ADMIN')">
+          <a th:href="@{/admin}">Administrator Dashboard</a>
+      </div>
+      
+     
+      <div sec:authorize="hasRole('USER')">
+          <a th:href="@{/}">Product Information</a>
+      </div>
+      
+      
+      
+     
+      <br/><br/>
+      
+      <!--<div th:if="${userInfo != null}" th:utext="${userInfo}"></div>-->
+      
+   </body>
+   
+</html>

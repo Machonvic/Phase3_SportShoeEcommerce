@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="ISO-8859-1">
+ <title th:utext="${title}"></title>
+</head>
+<body>
+<div align="center">	
+ <!-- Include _menu.html -->
+      <th:block th:include="/_menu"></th:block>
+
+	<h3 th:inline="text">Welcome [[${#httpServletRequest.remoteUser}]]</h3>
+	<!--<form th:action="@{/logout}" method="post">
+		<input type="submit" value="Logout" />
+	</form>-->
+
+	<h1>Purchase Report</h1>
+	
+	<br/><br/>
+	
+	<div sec:authorize="hasRole('ADMIN')">
+	
+	  <h2 align="center">Filter by Category or Date</h2>
+	  
+	  <!--<p th:text="${#dates.format(standardDate, 'yyyy-MM-dd')}"></p>
+	  <p th:text="${#temporals.format(localDateTime, 'yyyy-MM-dd')}"></p>
+      <p th:text="${#temporals.format(localDate, 'MM-yyyy')}"></p>-->
+      
+	  <form th:action="@{/purchaseReport}" th:object="${purchaseDetails}" method="get">	      
+	  <table border="0" cellpadding="10">
+	  <tr>
+		  <td><select th:field="*{categoryId}">
+		                          <option value="0">All</option>
+						          <option th:each="category : ${listCategory}"
+						                th:value="${category.categoryId}"
+						                th:text="${category.categoryId}+' : '+${category.categoryName}">
+						            </option>
+						    </select></td>
+						    
+	    <td>
+	       <!--<input type="text" name="keyword"  th:field="*{categoryId}" size="50" >-->
+	        <label for="purchase-date">Purchase Date</label>
+            <input type="date" th:field="*{purchaseDate}" id="purchase-date" value="${#temporals.format(localDateTime, 'yyyy-MM-dd')}"/>
+	    </td>
+	  </tr>
+	  
+	  </table>
+	   <button type="submit" class="btn btn-info" >Search</button>
+	  </form>
+	
+	<table border="1" cellpadding="10">
+		<thead>
+			<tr>
+				<th>User Name</th>
+				<th>First Name</th>
+				<th>Last Name</th>
+				<th>Product Name</th>
+				<th>Category Name</th>
+				<th>Product Amount</th>
+				<th>Payment</th>
+				<th>Purchase Date</th>
+				<th>Product Quantity</th>
+						
+				
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="purchase : ${listPurchase}">
+				<td th:text="${purchase.userName}">User Name</td>
+				<td th:text="${purchase.userFirstname}">First Name</td>
+				<td th:text="${purchase.userLastname}">Last Name</td>
+				<td th:text="${purchase.productName}">Product Name</td>
+				<td th:text="${purchase.categoryName}">Category Name</td>
+				<td th:text="${purchase.productAmount}">Product Amount</td>
+				<td th:text="${purchase.productPayment}">Payment</td>
+				<td th:text="${purchase.purchaseDate}">Purchase Date</td>
+				<td th:text="${purchase.productQuantity}">Product Quantity</td>
+			 </tr>
+		</tbody>
+	</table>
+	
+</div>
+</div>
+</body>
+</html>
